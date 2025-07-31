@@ -6,7 +6,9 @@ import { storage } from "./firebaseStorage";
 import { setupFirebaseAuth } from "./firebaseAuth";
 // Using Firestore helpers directly
 import { Pool } from "pg";
-import { adminDb } from './firestoreHelpers';
+
+// Use Firebase from the centralized firebase.ts file
+import { adminDb } from "./firebase";
 
 import rugRoutes from "./routes/rugs";
 import materialRoutes from "./routes/materials";
@@ -96,6 +98,10 @@ async function assignUserRole(
   roleId: string,
   departmentId: string,
 ) {
+  if (!adminDb) {
+    console.log(`⚠️ Cannot assign user role - Firebase Admin not initialized`);
+    return;
+  }
   const userRef = adminDb.collection("users").doc(userId);
   await userRef.set({
     UserId: userId,
@@ -115,6 +121,10 @@ async function checkPermission(
   action: string,
   collection: string,
 ): Promise<boolean> {
+  if (!adminDb) {
+    console.log(`⚠️ Cannot check permission - Firebase Admin not initialized`);
+    return false;
+  }
   const userSnap = await adminDb.collection("users").doc(userId).get();
   if (userSnap.exists) {
     const user = userSnap.data() as User;
@@ -131,6 +141,10 @@ async function checkPermission(
 
 // Secure Data Access (Example for rugs)
 async function getRugs(userId: string) {
+  if (!adminDb) {
+    console.log(`⚠️ Cannot access rugs - Firebase Admin not initialized`);
+    return;
+  }
   if (await checkPermission(userId, "read", "rugs")) {
     const rugsSnap = await adminDb.collection("rugs").get();
     const rugs = rugsSnap.docs.map((doc) => doc.data());
@@ -146,6 +160,10 @@ async function getRugs(userId: string) {
 
 // Secure Data Access (Example for buyers)
 async function getBuyers(userId: string) {
+  if (!adminDb) {
+    console.log(`⚠️ Cannot access buyers - Firebase Admin not initialized`);
+    return;
+  }
   if (await checkPermission(userId, "read", "buyers")) {
     const buyersSnap = await adminDb.collection("buyers").get();
     const buyers = buyersSnap.docs.map((doc) => doc.data());
@@ -162,6 +180,11 @@ async function getBuyers(userId: string) {
 // Check Firestore Collections
 async function checkFirestoreCollections() {
   console.log("🔍 Checking Firestore collections...");
+
+  if (!adminDb) {
+    console.log("⚠️ Cannot check Firestore collections - Firebase Admin not initialized");
+    return;
+  }
 
   try {
     // Check users collection
@@ -195,6 +218,11 @@ async function checkFirestoreCollections() {
 
 // Set Permissions
 async function setPermissions() {
+  if (!adminDb) {
+    console.log("⚠️ Cannot set permissions - Firebase Admin not initialized");
+    return;
+  }
+
   // Rugs permissions
   await adminDb.collection("permissions").doc("perm001").set({
     PermissionId: "perm001",

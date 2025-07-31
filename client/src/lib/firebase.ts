@@ -14,12 +14,12 @@ const initializeRealAuth = async () => {
     const { getAuth, GoogleAuthProvider, signInWithPopup, signOut } = await import("firebase/auth");
     
     const firebaseConfig = {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDvK8p3QXqZ5L2M9X8Y7N6T4R1S3W2E5Q9",
-      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "eastern-mills-erp.firebaseapp.com",
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "eastern-mills-erp",
-      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "eastern-mills-erp.appspot.com",
-      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "123456789012",
-      appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:123456789012:web:abcdef123456789012",
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDusEUNGnevL8TlvAiBcfPK-O8fmHUyzVM",
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "eastern-erp-v1.firebaseapp.com",
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "eastern-erp-v1",
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "eastern-erp-v1.firebasestorage.app",
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "613948062256",
+      appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:613948062256:web:e456c256967c8bca500bf5",
     };
 
     console.log("Initializing real Firebase Auth for Google Sign-In");
@@ -99,26 +99,42 @@ const initializeFirestore = async () => {
   if (realFirestore) return realFirestore;
   
   try {
-    const { initializeApp } = await import("firebase/app");
-    const { getFirestore, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, getDocs, query, where } = await import("firebase/firestore");
-    
     const firebaseConfig = {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDvK8p3QXqZ5L2M9X8Y7N6T4R1S3W2E5Q9",
-      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "eastern-mills-erp.firebaseapp.com",
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "eastern-mills-erp",
-      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "eastern-mills-erp.appspot.com",
-      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "123456789012",
-      appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:123456789012:web:abcdef123456789012",
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDusEUNGnevL8TlvAiBcfPK-O8fmHUyzVM",
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "eastern-erp-v1.firebaseapp.com",
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "eastern-erp-v1",
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "eastern-erp-v1.firebasestorage.app",
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "613948062256",
+      appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:613948062256:web:e456c256967c8bca500bf5",
     };
 
-    console.log("Initializing real Firestore database");
-    // Use a different app name to avoid conflicts with auth
-    const app = initializeApp(firebaseConfig, 'firestore-database-app');
+    console.log("Initializing real Firestore database with config:", firebaseConfig);
+    
+    // Import Firebase modules
+    const { initializeApp, getApps } = await import("firebase/app");
+    const { getFirestore } = await import("firebase/firestore");
+    
+    // Check if app already exists with this name
+    const existingApps = getApps();
+    let app;
+    
+    const firestoreAppName = 'firestore-database-app';
+    const existingApp = existingApps.find(app => app.name === firestoreAppName);
+    
+    if (existingApp) {
+      app = existingApp;
+      console.log("Using existing Firebase app for Firestore");
+    } else {
+      app = initializeApp(firebaseConfig, firestoreAppName);
+      console.log("Created new Firebase app for Firestore");
+    }
+    
     realFirestore = getFirestore(app);
+    console.log("✅ Firestore initialized successfully");
     
     return realFirestore;
   } catch (error) {
-    console.error("Failed to initialize Firestore:", error);
+    console.error("❌ Failed to initialize Firestore:", error);
     return null;
   }
 };
@@ -129,14 +145,23 @@ export const firestore = {
       get: async () => {
         const db = await initializeFirestore();
         if (db) {
-          const { doc, getDoc } = await import("firebase/firestore");
-          const docRef = doc(db, path, id);
-          const docSnap = await getDoc(docRef);
-          return {
-            exists: docSnap.exists(),
-            id: docSnap.id,
-            data: () => docSnap.data()
-          };
+          try {
+            const { doc, getDoc } = await import("firebase/firestore");
+            const docRef = doc(db, path, id);
+            const docSnap = await getDoc(docRef);
+            return {
+              exists: docSnap.exists(),
+              id: docSnap.id,
+              data: () => docSnap.data()
+            };
+          } catch (error) {
+            console.error("Error getting document:", error);
+            return { 
+              exists: false, 
+              id: id,
+              data: () => null 
+            };
+          }
         } else {
           // Fallback to mock
           return { 
@@ -195,16 +220,25 @@ export const firestore = {
     get: async () => {
       const db = await initializeFirestore();
       if (db) {
-        const { collection, getDocs } = await import("firebase/firestore");
-        const collectionRef = collection(db, path);
-        const querySnapshot = await getDocs(collectionRef);
-        return {
-          docs: querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            data: () => doc.data()
-          }))
-        };
+        try {
+          const { collection, getDocs } = await import("firebase/firestore");
+          const collectionRef = collection(db, path);
+          const querySnapshot = await getDocs(collectionRef);
+          console.log(`✅ Retrieved ${querySnapshot.docs.length} documents from ${path}`);
+          return {
+            docs: querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              data: () => doc.data()
+            }))
+          };
+        } catch (error) {
+          console.error(`❌ Error getting collection ${path}:`, error);
+          return { 
+            docs: []
+          };
+        }
       } else {
+        console.log(`⚠️ Using mock data for collection ${path}`);
         // Fallback to mock
         return { 
           docs: [

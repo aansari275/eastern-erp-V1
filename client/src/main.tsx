@@ -9,11 +9,11 @@ let SimpleApp: any = null;
 // Lazy load the main app to catch import errors
 async function loadApp() {
   try {
-    const module = await import("./SimpleApp");
+    const module = await import("./NewApp");
     SimpleApp = module.default;
     return SimpleApp;
   } catch (error) {
-    console.error("Failed to load SimpleApp:", error);
+    console.error("Failed to load NewApp:", error);
     throw error;
   }
 }

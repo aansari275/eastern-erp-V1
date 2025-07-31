@@ -32,7 +32,7 @@ try {
 } catch (error) {
   console.warn('Service account file not found, attempting basic Firebase init');
   serviceAccount = {
-    project_id: process.env.VITE_FIREBASE_PROJECT_ID || 'rugcraftpro',
+    project_id: process.env.VITE_FIREBASE_PROJECT_ID || 'eastern-erp-v1',
   };
 }
 
@@ -42,14 +42,14 @@ if (!admin.apps || !admin.apps.length) {
       // Use service account if available
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        projectId: serviceAccount.project_id || 'rugcraftpro',
+        projectId: serviceAccount.project_id || 'eastern-erp-v1',
       });
       console.log('✓ Firebase initialized with service account');
     } else {
       // Initialize Firebase with minimal configuration for development
       console.warn('⚠️ Initializing Firebase with basic configuration');
       admin.initializeApp({
-        projectId: 'rugcraftpro',
+        projectId: 'eastern-erp-v1',
       });
       console.log('✓ Firebase initialized with basic configuration');
     }

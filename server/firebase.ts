@@ -1,18 +1,19 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY || "AIzaSyADeiIAY7CA5Y5rQbUacqKxtHR9zzQkvl0",
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN || "rugcraftpro.firebaseapp.com",
-  projectId: process.env.FIREBASE_PROJECT_ID || "rugcraftpro",
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || "rugcraftpro.firebasestorage.app",
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "874927345152",
-  appId: process.env.FIREBASE_APP_ID || "1:874927345152:web:a9af4b96032d22095412e5",
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID || "G-NDP0Z4H9KF",
+  apiKey: process.env.FIREBASE_API_KEY || "AIzaSyDusEUNGnevL8TlvAiBcfPK-O8fmHUyzVM",
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN || "eastern-erp-v1.firebaseapp.com",
+  projectId: process.env.FIREBASE_PROJECT_ID || "eastern-erp-v1",
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || "eastern-erp-v1.firebasestorage.app",
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "613948062256",
+  appId: process.env.FIREBASE_APP_ID || "1:613948062256:web:e456c256967c8bca500bf5",
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID || "G-11QFYDYV29",
 };
 
 // Initialize Firebase Client (only if not already initialized)
@@ -37,12 +38,14 @@ let adminApp: admin.app.App | null = null;
 
 try {
   // Check if admin app is already initialized
-  if (admin.apps.length === 0) {
+  if (!admin.apps || admin.apps.length === 0) {
     // Try to initialize with service account file first
-    const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || './serviceAccountKey.json';
+    const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || './server/serviceAccountKey.json';
     
     try {
-      const serviceAccount = require(serviceAccountPath);
+      // Use absolute path resolution
+      const absolutePath = resolve(process.cwd(), serviceAccountPath);
+      const serviceAccount = JSON.parse(readFileSync(absolutePath, 'utf8'));
       adminApp = admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         projectId: firebaseConfig.projectId

@@ -1,8 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { db } from '../config/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 const HomePage: React.FC = () => {
   const [, setLocation] = useLocation();
+  const [stats, setStats] = useState({
+    activeSamples: 0,
+    pendingInspections: 0,
+    activeOrders: 0,
+    totalProducts: 0,
+    loading: true
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        console.log('🔄 Fetching stats from Firebase...');
+        // Fetch real data from your Firebase collections using the direct Firebase SDK
+        const [rugsSnapshot, inspectionsSnapshot, ordersSnapshot, buyersSnapshot] = await Promise.all([
+          getDocs(collection(db, 'rugs')),
+          getDocs(collection(db, 'labInspections')),
+          getDocs(collection(db, 'ops')),
+          getDocs(collection(db, 'buyers'))
+        ]);
+
+        console.log('📊 Stats retrieved:', {
+          rugs: rugsSnapshot.docs.length,
+          inspections: inspectionsSnapshot.docs.length,
+          orders: ordersSnapshot.docs.length,
+          buyers: buyersSnapshot.docs.length
+        });
+
+        setStats({
+          activeSamples: rugsSnapshot.docs.length,
+          pendingInspections: inspectionsSnapshot.docs.length,
+          activeOrders: ordersSnapshot.docs.length,
+          totalProducts: buyersSnapshot.docs.length,
+          loading: false
+        });
+      } catch (error) {
+        console.error('❌ Error fetching stats:', error);
+        setStats(prev => ({ ...prev, loading: false }));
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const navigationItems = [
     {
@@ -124,7 +168,9 @@ const HomePage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Active Samples</p>
-                <p className="text-2xl font-bold text-gray-900">0</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.loading ? '...' : stats.activeSamples}
+                </p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +184,9 @@ const HomePage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Pending Inspections</p>
-                <p className="text-2xl font-bold text-gray-900">0</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.loading ? '...' : stats.pendingInspections}
+                </p>
               </div>
               <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +200,9 @@ const HomePage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Active Orders</p>
-                <p className="text-2xl font-bold text-gray-900">0</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.loading ? '...' : stats.activeOrders}
+                </p>
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,7 +216,9 @@ const HomePage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Products</p>
-                <p className="text-2xl font-bold text-gray-900">0</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.loading ? '...' : stats.totalProducts}
+                </p>
               </div>
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
