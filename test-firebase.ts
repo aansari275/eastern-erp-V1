@@ -25,14 +25,14 @@ async function testConnection() {
       console.log('Data:', snapshot.data());
     }
     
-    // Test rugs collection
-    console.log('🔍 Testing rugs collection...');
-    const rugsSnapshot = await db.collection('rugs').limit(5).get();
-    console.log(`📋 Found ${rugsSnapshot.size} rugs in database`);
+    // Test products collection (where rugs are stored)
+    console.log('🔍 Testing products collection...');
+    const productsSnapshot = await db.collection('products').limit(5).get();
+    console.log(`📋 Found ${productsSnapshot.size} products in database`);
     
-    rugsSnapshot.forEach((doc) => {
+    productsSnapshot.forEach((doc) => {
       const data = doc.data();
-      console.log(`   - ${doc.id}: ${data.designName || 'No name'}`);
+      console.log(`   - ${doc.id}: ${data.designName || data.buyerName || 'No name'}`);
     });
     
     // Clean up test document

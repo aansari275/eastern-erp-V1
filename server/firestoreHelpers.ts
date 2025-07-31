@@ -214,17 +214,17 @@ export async function updateBuyer(id: string, updates: Partial<Buyer>): Promise<
 
 // Rug helper functions
 export async function getAllRugs() {
-  const snapshot = await adminDb.collection('rugs').get();
+  const snapshot = await adminDb.collection('products').get();
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
 
 export async function getRugsByUser(userId: string) {
-  const snapshot = await adminDb.collection('rugs').where('userId', '==', userId).get();
+  const snapshot = await adminDb.collection('products').where('userId', '==', userId).get();
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
 
 export async function getRugById(rugId: string) {
-  const doc = await adminDb.collection('rugs').doc(rugId).get();
+  const doc = await adminDb.collection('products').doc(rugId).get();
   if (!doc.exists) return null;
   return { id: doc.id, ...doc.data() };
 }
@@ -250,7 +250,7 @@ export async function createRug(rugData: any) {
     console.warn(`⚠️ Large payload detected: ${(payloadSize / 1024).toFixed(2)}KB - may hit Firebase 1MB limit`);
   }
 
-  const docRef = await adminDb.collection('rugs').add({
+  const docRef = await adminDb.collection('products').add({
     ...rugData,
     created_at: new Date(),
     updated_at: new Date()
@@ -281,18 +281,18 @@ export async function updateRug(rugId: string, updateData: any) {
     console.warn(`⚠️ Large payload detected: ${(payloadSize / 1024).toFixed(2)}KB - may hit Firebase 1MB limit`);
   }
 
-  await adminDb.collection('rugs').doc(rugId).update({
+  await adminDb.collection('products').doc(rugId).update({
     ...updateData,
     updated_at: new Date()
   });
-  const updatedDoc = await adminDb.collection('rugs').doc(rugId).get();
+  const updatedDoc = await adminDb.collection('products').doc(rugId).get();
   if (!updatedDoc.exists) return null;
   console.log(`✅ Rug ${rugId} updated successfully`);
   return { id: updatedDoc.id, ...updatedDoc.data() };
 }
 
 export async function deleteRug(rugId: string) {
-  await adminDb.collection('rugs').doc(rugId).delete();
+  await adminDb.collection('products').doc(rugId).delete();
 }
 
 // Add more helper functions as needed
