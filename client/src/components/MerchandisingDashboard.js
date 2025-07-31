@@ -1,0 +1,13 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, Plus } from "lucide-react";
+import PDOCPriceTab from "./PDOCPriceTab";
+import BuyerManagement from "./BuyerManagement";
+import CreateOPSManual from "./CreateOPSManual";
+const MerchandisingDashboard = ({ rugs, onCreatePDOC }) => {
+    const [activeTab, setActiveTab] = useState("create-ops");
+    return (_jsxs("div", { className: "min-h-screen bg-gray-50", children: [_jsx("div", { className: "bg-white border-b border-gray-200 px-6 py-4", children: _jsxs("div", { className: "max-w-7xl mx-auto", children: [_jsx("h1", { className: "text-2xl font-bold text-gray-900", children: "Merchandising Department" }), _jsx("p", { className: "text-gray-600", children: "Manage products, PDOCs, and buyer relationships" })] }) }), _jsx("div", { className: "max-w-7xl mx-auto p-6", children: _jsxs(Tabs, { value: activeTab, onValueChange: setActiveTab, children: [_jsxs(TabsList, { className: "grid w-full grid-cols-1 sm:grid-cols-3 gap-2 p-2 bg-white shadow-lg rounded-lg h-auto", children: [_jsxs(TabsTrigger, { value: "create-ops", className: "flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-md data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 data-[state=active]:shadow-sm hover:bg-gray-50 transition-all duration-200", children: [_jsx(Plus, { className: "h-4 w-4" }), "Create OPS"] }), _jsxs(TabsTrigger, { value: "buyers", className: "flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-md data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 data-[state=active]:shadow-sm hover:bg-gray-50 transition-all duration-200", children: [_jsx(Users, { className: "h-4 w-4" }), "Buyer Management"] }), _jsx(TabsTrigger, { value: "pdoc", className: "flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-md data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 data-[state=active]:shadow-sm hover:bg-gray-50 transition-all duration-200", children: "PDOC Management" })] }), _jsx(TabsContent, { value: "create-ops", className: "mt-6", children: _jsx(CreateOPSManual, {}) }), _jsx(TabsContent, { value: "pdoc", className: "mt-6", children: _jsxs(Card, { children: [_jsx(CardHeader, { children: _jsx(CardTitle, { children: "PDOC Management" }) }), _jsx(CardContent, { children: _jsx(PDOCPriceTab, {}) })] }) }), _jsx(TabsContent, { value: "buyers", className: "mt-6", children: _jsx(BuyerManagement, {}) })] }) })] }));
+};
+export default MerchandisingDashboard;

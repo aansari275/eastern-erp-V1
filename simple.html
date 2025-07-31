@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eastern Mills ERP</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2563eb; margin-bottom: 20px; }
+        .status { padding: 10px; background: #dcfce7; border: 1px solid #16a34a; border-radius: 5px; margin: 20px 0; }
+        .links { margin-top: 30px; }
+        .links a { display: inline-block; margin-right: 20px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 5px; }
+        .links a:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏭 Eastern Mills ERP System</h1>
+        
+        <div class="status">
+            ✅ <strong>Server Status:</strong> Running Successfully!
+        </div>
+        
+        <p><strong>Welcome to Eastern Mills ERP</strong></p>
+        <p>Your comprehensive manufacturing management system is now online.</p>
+        
+        <p><strong>Current Time:</strong> <span id="time"></span></p>
+        
+        <div class="links">
+            <h3>Quick Access:</h3>
+            <a href="http://localhost:3000" target="_blank">React App (localhost:3000)</a>
+            <a href="http://127.0.0.1:3000" target="_blank">Alternative (127.0.0.1:3000)</a>
+            <a href="http://192.168.0.100:3000" target="_blank">Network Access</a>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 15px; background: #fffbeb; border: 1px solid #f59e0b; border-radius: 5px;">
+            <h4>🔧 Troubleshooting:</h4>
+            <p><strong>If links don't work:</strong></p>
+            <ol>
+                <li>Try opening in a different browser (Chrome, Firefox, Safari)</li>
+                <li>Try incognito/private mode</li>
+                <li>Check if your firewall is blocking port 3000</li>
+                <li>Wait 10-15 seconds for the server to fully start</li>
+            </ol>
+            <p><strong>Server Status Check:</strong></p>
+            <button onclick="checkServer()" style="padding: 5px 10px; background: #2563eb; color: white; border: none; border-radius: 3px; cursor: pointer;">Test Connection</button>
+            <div id="serverStatus" style="margin-top: 10px;"></div>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f8fafc; border-radius: 5px;">
+            <h3>🚀 Features Available:</h3>
+            <ul>
+                <li>✅ Modern Landing Page</li>
+                <li>✅ Enhanced Dashboard</li>
+                <li>✅ Rug Creation Forms</li>
+                <li>✅ Lab Inspection System</li>
+                <li>✅ Quality Control</li>
+                <li>✅ User Management</li>
+                <li>✅ Data Analytics</li>
+                <li>✅ Compliance Audits</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+        setInterval(() => {
+            document.getElementById('time').textContent = new Date().toLocaleString();
+        }, 1000);
+        
+        async function checkServer() {
+            const statusDiv = document.getElementById('serverStatus');
+            statusDiv.innerHTML = '⏳ Testing connection...';
+            
+            try {
+                const response = await fetch('http://localhost:3000/', { mode: 'no-cors' });
+                statusDiv.innerHTML = '✅ Server is responding! Try the links above.';
+                statusDiv.style.color = 'green';
+            } catch (error) {
+                statusDiv.innerHTML = '❌ Server not responding. Please wait for the server to start or check console for errors.';
+                statusDiv.style.color = 'red';
+                console.error('Server test failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>

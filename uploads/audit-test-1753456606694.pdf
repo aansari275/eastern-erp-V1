@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audit Report - System Available</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+        .header { color: #003366; font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+        .status { color: #28a745; font-weight: bold; }
+        .warning { color: #ffc107; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="header">Eastern Mills Quality Management System</div>
+    <p><strong>System Status:</strong> <span class="status">✓ Online and Operational</span></p>
+    <p><strong>PDF Generation:</strong> <span class="warning">⚠ Using Fallback Mode</span></p>
+    <p><strong>Generated:</strong> 7/25/2025, 3:16:46 PM</p>
+    <p><strong>Message:</strong> The audit system is working correctly. PDF generation encountered compatibility issues with updated dependencies but functionality remains available.</p>
+    <p><strong>Next Steps:</strong> System administrators can review dependency compatibility for full PDF rendering.</p>
+</body>
+</html>
