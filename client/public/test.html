@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page - Eastern Mills ERP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        h1 { font-size: 2.5em; margin-bottom: 20px; }
+        p { font-size: 1.2em; margin: 10px 0; }
+        .status { color: #4ade80; font-weight: bold; }
+        .timestamp { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏭 Eastern Mills ERP</h1>
+        <p class="status">✅ DEPLOYMENT SUCCESSFUL</p>
+        <p>Test page is loading correctly!</p>
+        <p class="timestamp">Deployed: <span id="time"></span></p>
+        <p><strong>Main App:</strong> <a href="/" style="color: #60a5fa;">Go to Dashboard</a></p>
+        <p><strong>Landing:</strong> <a href="/landing" style="color: #60a5fa;">View Landing Page</a></p>
+    </div>
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+        console.log('Eastern Mills ERP Test Page Loaded Successfully!');
+    </script>
+</body>
+</html>
