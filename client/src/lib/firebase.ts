@@ -5,14 +5,28 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyADeiIAY7CA5Y5rQbUacqKxtHR9zzQkvl0",
-  authDomain: "rugcraftpro.firebaseapp.com",
-  projectId: "rugcraftpro",
-  storageBucket: "rugcraftpro.appspot.com",
-  messagingSenderId: "874927345152",
-  appId: "1:874927345152:web:a9af4b96032d22095412e5",
-  measurementId: "G-NDP0Z4H9KF",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
+
+// Validate Firebase configuration
+const requiredKeys = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'messagingSenderId', 'appId'];
+const missingKeys = requiredKeys.filter(key => !firebaseConfig[key as keyof typeof firebaseConfig]);
+
+if (missingKeys.length > 0) {
+  console.error('Missing Firebase configuration keys:', missingKeys);
+  console.error('Current config:', firebaseConfig);
+  throw new Error(`Firebase configuration incomplete. Missing: ${missingKeys.join(', ')}`);
+}
+
+console.log('Initializing Firebase with config:', {
+  ...firebaseConfig,
+  apiKey: firebaseConfig.apiKey ? `${firebaseConfig.apiKey.substring(0, 10)}...` : 'missing'
+});
 
 const app = initializeApp(firebaseConfig);
 
