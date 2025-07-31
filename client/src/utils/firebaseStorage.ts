@@ -1,21 +1,31 @@
-// Firebase Storage utilities for evidence image uploads
-import { ref, uploadBytes, getDownloadURL, getStorage } from 'firebase/storage';
-
-const storage = getStorage();
+// Mock Firebase Storage utilities for demo purposes
+console.log('Using mock Firebase Storage for demo');
 
 export const uploadEvidenceImage = async (file: File, auditId: string, itemCode: string): Promise<string> => {
   try {
     const timestamp = Date.now();
     const fileName = `audit-evidence/${auditId}/${itemCode}/${timestamp}-${file.name}`;
-    const storageRef = ref(storage, fileName);
     
-    const snapshot = await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(snapshot.ref);
+    // Simulate upload delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
-    console.log('✅ Evidence image uploaded:', downloadURL);
-    return downloadURL;
+    const mockUrl = `https://demo-storage.com/${fileName}`;
+    console.log('✅ Mock evidence image uploaded:', mockUrl);
+    return mockUrl;
   } catch (error) {
     console.error('❌ Failed to upload evidence image:', error);
+    throw error;
+  }
+};
+
+export const uploadMultipleEvidenceImages = async (files: File[], auditId: string, itemCode: string): Promise<string[]> => {
+  try {
+    const uploadPromises = files.map(file => uploadEvidenceImage(file, auditId, itemCode));
+    const urls = await Promise.all(uploadPromises);
+    console.log('✅ Multiple mock images uploaded:', urls);
+    return urls;
+  } catch (error) {
+    console.error('❌ Failed to upload multiple evidence images:', error);
     throw error;
   }
 };
