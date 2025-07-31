@@ -1,66 +1,8 @@
-import admin from 'firebase-admin';
 import { User, Department, UserTabPermission, Buyer } from '@shared/schema';
-// Initialize Firebase Admin with service account
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+import db from './firebaseAdmin.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-let serviceAccount: any;
-const serviceAccountPath = path.join(__dirname, 'serviceAccountKey.json');
-
-try {
-  console.log('Checking for service account at:', serviceAccountPath);
-  console.log('File exists?', fs.existsSync(serviceAccountPath));
-
-  if (fs.existsSync(serviceAccountPath)) {
-    serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
-    console.log('✓ Service account file loaded successfully');
-  } else {
-    console.warn('Service account file not found at:', serviceAccountPath);
-    // Try relative path
-    const relativePath = './server/serviceAccountKey.json';
-    if (fs.existsSync(relativePath)) {
-      serviceAccount = JSON.parse(fs.readFileSync(relativePath, 'utf8'));
-      console.log('✓ Service account file loaded from relative path');
-    } else {
-      throw new Error('Service account file not found');
-    }
-  }
-} catch (error) {
-  console.warn('Service account file not found, attempting basic Firebase init');
-  serviceAccount = {
-    project_id: process.env.VITE_FIREBASE_PROJECT_ID || 'rugcraftpro',
-  };
-}
-
-if (!admin.apps || !admin.apps.length) {
-  try {
-    if (serviceAccount.private_key) {
-      // Use service account if available
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        projectId: serviceAccount.project_id || 'rugcraftpro',
-      });
-      console.log('✓ Firebase initialized with service account');
-    } else {
-      // Initialize Firebase with minimal configuration for development
-      console.warn('⚠️ Initializing Firebase with basic configuration');
-      admin.initializeApp({
-        projectId: 'rugcraftpro',
-      });
-      console.log('✓ Firebase initialized with basic configuration');
-    }
-  } catch (error) {
-    console.error('Firebase initialization error:', error);
-    // Create a fallback admin object for development
-    console.warn('⚠️ Using fallback Firebase configuration');
-  }
-}
-
-export const adminDb = admin.firestore();
+// Use the properly initialized Firestore instance
+export const adminDb = db;
 
 // User operations
 export async function getUserById(id: string): Promise<User | null> {

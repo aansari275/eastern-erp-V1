@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { getAllRugs, getRugsByUser, getRugById, createRug, updateRug, deleteRug } from '../firestoreHelpers';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const router = Router();
 
@@ -11,8 +13,20 @@ router.get('/', async (req, res) => {
     console.log(`Found ${rugs.length} rugs`);
     res.json(rugs);
   } catch (error: any) {
-    console.error('Error fetching rugs:', error);
-    res.status(500).json({ error: error.message });
+    console.error('Error fetching rugs from Firebase:', error);
+    
+    // Fallback to comprehensive dataset if Firebase is not available
+    try {
+      console.log('🔄 Fallback: Loading comprehensive rugs dataset...');
+      const comprehensivePath = join(process.cwd(), 'comprehensive-90-rugs.json');
+      const comprehensiveData = readFileSync(comprehensivePath, 'utf-8');
+      const comprehensiveRugs = JSON.parse(comprehensiveData);
+      console.log(`✅ Loaded ${comprehensiveRugs.length} comprehensive rugs`);
+      res.json(comprehensiveRugs);
+    } catch (fallbackError: any) {
+      console.error('Error loading sample data:', fallbackError);
+      res.status(500).json({ error: 'Unable to load rugs data. Please check Firebase configuration.' });
+    }
   }
 });
 

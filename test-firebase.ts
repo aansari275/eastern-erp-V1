@@ -1,42 +1,57 @@
-// Test Firebase connection and create sample lab inspection
-import { firestore } from './client/src/lib/firebase';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import db from './server/firebaseAdmin.js';
 
-async function testFirebase() {
+async function testConnection() {
   try {
-    console.log('Testing Firebase connection...');
+    if (!db) {
+      console.log('❌ Firebase Admin not initialized');
+      console.log('💡 Solutions:');
+      console.log('   1. Download service account key from Firebase Console');
+      console.log('   2. Save as server/serviceAccountKey.json');
+      console.log('   3. Or set environment variables (see VERCEL_ENV_VARS.md)');
+      return;
+    }
     
-    // Test adding a document
-    const testData = {
-      materialType: 'dyed',
-      company: 'EHI',
-      supplierName: 'Test Supplier',
-      incomingDate: '2025-07-26',
-      challanNumber: 'CH001',
-      status: 'submitted',
-      submittedAt: new Date(),
-      labReportNumber: 'EHI-LAB-1001',
-      overallStatus: 'pass',
-      testResults: [
-        { parameter: 'Moisture Content', standard: '≤ 8.5%', result: '7.2%', status: 'PASS' },
-        { parameter: 'Color Fastness', standard: '≥ 4', result: '4.5', status: 'PASS' }
-      ]
-    };
+    console.log('🔍 Testing Firestore connection...');
     
-    const docRef = await addDoc(collection(firestore, 'labInspections'), testData);
-    console.log('✅ Test document added with ID:', docRef.id);
+    // Test basic connection
+    const testRef = db.collection('test').doc('connection-test');
+    await testRef.set({ timestamp: new Date().toISOString(), test: true });
+    console.log('✅ Write test successful');
     
-    // Test reading documents
-    const snapshot = await getDocs(collection(firestore, 'labInspections'));
-    console.log('✅ Found', snapshot.docs.length, 'lab inspections');
+    // Test reading
+    const snapshot = await testRef.get();
+    if (snapshot.exists) {
+      console.log('✅ Read test successful');
+      console.log('Data:', snapshot.data());
+    }
     
-    snapshot.docs.forEach(doc => {
-      console.log('Document ID:', doc.id, 'Data:', doc.data());
+    // Test rugs collection
+    console.log('🔍 Testing rugs collection...');
+    const rugsSnapshot = await db.collection('rugs').limit(5).get();
+    console.log(`📋 Found ${rugsSnapshot.size} rugs in database`);
+    
+    rugsSnapshot.forEach((doc) => {
+      const data = doc.data();
+      console.log(`   - ${doc.id}: ${data.designName || 'No name'}`);
     });
     
-  } catch (error) {
-    console.error('❌ Firebase test failed:', error);
+    // Clean up test document
+    await testRef.delete();
+    console.log('🧹 Cleaned up test document');
+    
+    console.log('🎉 Firebase connection test completed successfully!');
+    
+  } catch (error: any) {
+    console.error('❌ Connection test failed:', error.message);
+    console.log('🔧 Debug info:');
+    console.log('   Error type:', error.constructor.name);
+    console.log('   Error code:', error.code || 'No code');
+    
+    if (error.message.includes('credentials')) {
+      console.log('💡 This looks like a credentials issue');
+      console.log('   Please check your service account key or environment variables');
+    }
   }
 }
 
-testFirebase();
+testConnection();
