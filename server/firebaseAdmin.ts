@@ -29,7 +29,22 @@ async function initializeFirebaseAdmin() {
       return getFirestore(app);
     }
     
-    // Method 2: Try environment variables
+    // Method 2: Try Firebase Admin SDK JSON from Vercel
+    if (process.env.Firebase_Admin_SDK) {
+      console.log('🔑 Using Firebase Admin SDK from Vercel...');
+      
+      const serviceAccount = JSON.parse(process.env.Firebase_Admin_SDK);
+      
+      const app = initializeApp({
+        credential: cert(serviceAccount),
+        projectId: serviceAccount.project_id
+      });
+      
+      console.log('✅ Firebase Admin initialized with Vercel Firebase_Admin_SDK');
+      return getFirestore(app);
+    }
+    
+    // Method 3: Try environment variables
     if (process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY) {
       console.log('🔑 Using environment variables...');
       
@@ -48,7 +63,7 @@ async function initializeFirebaseAdmin() {
       return getFirestore(app);
     }
     
-    // Method 3: Try service account JSON from environment
+    // Method 4: Try service account JSON from environment
     if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
       console.log('🔑 Using service account JSON from environment...');
       
