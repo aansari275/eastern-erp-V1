@@ -1,0 +1,31 @@
+VERCEL ENVIRONMENT VARIABLES - Copy & Paste These:
+
+1. NODE_ENV = production
+
+2. VITE_FIREBASE_API_KEY = [Get from Firebase Console → Project Settings → Web App Config]
+
+3. VITE_FIREBASE_AUTH_DOMAIN = [your-project].firebaseapp.com
+
+4. VITE_FIREBASE_PROJECT_ID = [your-project-id]
+
+5. VITE_FIREBASE_STORAGE_BUCKET = [your-project].appspot.com
+
+6. VITE_FIREBASE_MESSAGING_SENDER_ID = [your-sender-id-numbers]
+
+7. VITE_FIREBASE_APP_ID = [your-app-id]
+
+8. FIREBASE_PROJECT_ID = [same as VITE_FIREBASE_PROJECT_ID]
+
+9. FIREBASE_CLIENT_EMAIL = firebase-adminsdk-xxxxx@[your-project].iam.gserviceaccount.com
+
+10. FIREBASE_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\n[Your_Private_Key_Here]\n-----END PRIVATE KEY-----"
+
+11. DB_HOST = 167.71.239.104
+
+12. DB_NAME = empl_data19
+
+13. DB_USER = sa
+
+14. DB_PASSWORD = Empl@786
+
+IMPORTANT: For each variable, select "Production", "Preview", and "Development" environments!
