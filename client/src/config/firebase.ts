@@ -7,13 +7,13 @@ import { getAnalytics } from "firebase/analytics";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyBMDgfMGjY7BDLqEMnrfVTOxHzpHKOeGvw",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "eastern-erp-2025.firebaseapp.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "eastern-erp-2025",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "eastern-erp-2025.appspot.com",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "399687000927",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:399687000927:web:YOUR_APP_ID",
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-YOUR_MEASUREMENT_ID",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDusEUNGnevL8TlvAiBcfPK-O8fmHUyzVM",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "eastern-erp-v1.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "eastern-erp-v1",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "eastern-erp-v1.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "613948062256",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:613948062256:web:e456c256967c8bca500bf5",
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-11QFYDYV29",
 };
 
 // Initialize Firebase - check if app already exists to prevent duplicate app error
