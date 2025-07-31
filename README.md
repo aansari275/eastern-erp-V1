@@ -66,3 +66,5 @@ Required for deployment:
 **Built with ❤️ for Eastern Mills Manufacturing**
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
+
+**Latest Update:** Firebase environment variables configured for production deployment.
