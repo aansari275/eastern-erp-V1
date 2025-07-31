@@ -22,17 +22,7 @@ import {
   List,
   Loader2
 } from 'lucide-react';
-import { 
-  collection, 
-  query, 
-  where, 
-  orderBy, 
-  onSnapshot, 
-  deleteDoc, 
-  doc,
-  Timestamp
-} from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { firestore } from '../lib/firebase';
 import { CONSTRUCTION_OPTIONS, COLOR_PALETTE } from '../types/rug.js';
 
 // TypeScript interfaces
@@ -85,8 +75,8 @@ const RugGallery: React.FC<RugGalleryProps> = ({ className = "" }) => {
     colour: ''
   });
 
-  // Real-time listener for rugs
-  useEffect(() => {
+  // Fetch rugs data
+  const fetchRugs = useCallback(async () => {
     if (!user) {
       setLoading(false);
       return;
@@ -94,37 +84,29 @@ const RugGallery: React.FC<RugGalleryProps> = ({ className = "" }) => {
 
     setLoading(true);
     
-    const rugsCollection = collection(db, 'rugs');
-    const q = query(
-      rugsCollection,
-      where('createdBy', '==', user.uid),
-      orderBy('updatedAt', 'desc')
-    );
-
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const rugData: Rug[] = [];
-        snapshot.forEach((doc) => {
-          rugData.push({ id: doc.id, ...doc.data() } as Rug);
-        });
-        
-        setRugs(rugData);
-        setLoading(false);
-      },
-      (error) => {
-        console.error('Error fetching rugs:', error);
-        toast({
-          title: "Error loading rugs",
-          description: "Failed to load rug data. Please refresh the page.",
-          variant: "destructive"
-        });
-        setLoading(false);
-      }
-    );
-
-    return () => unsubscribe();
+    try {
+      const result = await firestore.collection('rugs').get();
+      const rugData: Rug[] = result.docs
+        .map(doc => ({ id: doc.id, ...doc.data() } as Rug))
+        .filter(rug => rug.createdBy === user.uid)
+        .sort((a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime());
+      
+      setRugs(rugData);
+    } catch (error) {
+      console.error('Error fetching rugs:', error);
+      toast({
+        title: "Error loading rugs",
+        description: "Failed to load rug data. Please refresh the page.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   }, [user, toast]);
+
+  useEffect(() => {
+    fetchRugs();
+  }, [fetchRugs]);
 
   // Apply filters
   useEffect(() => {
@@ -180,11 +162,13 @@ const RugGallery: React.FC<RugGalleryProps> = ({ className = "" }) => {
     }
 
     try {
-      await deleteDoc(doc(db, 'rugs', rugId));
+      await firestore.collection('rugs').doc(rugId).delete();
       toast({
         title: "Rug deleted",
         description: `Rug "${articleNumber}" has been deleted successfully.`,
       });
+      // Refresh the rugs list
+      fetchRugs();
     } catch (error) {
       console.error('Error deleting rug:', error);
       toast({

@@ -1,8 +1,7 @@
 import React from 'react';
 import EnhancedCreateRugForm from './forms/EnhancedCreateRugForm';
 import { useToast } from '../hooks/use-toast';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { firestore } from '../lib/firebase';
 
 interface CreateRugFormProps {
   onSave?: (data: any) => void;
@@ -19,11 +18,11 @@ const CreateRugForm: React.FC<CreateRugFormProps> = ({
 
   const handleSubmit = async (data: any) => {
     try {
-      // Add to Firebase
-      const docRef = await addDoc(collection(db, 'rugs'), {
+      // Add to Firestore
+      const result = await firestore.collection('rugs').add({
         ...data,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
 
       toast({
@@ -33,7 +32,7 @@ const CreateRugForm: React.FC<CreateRugFormProps> = ({
 
       // Call parent callback if provided
       if (onSave) {
-        onSave({ ...data, id: docRef.id });
+        onSave({ ...data, id: result.id });
       }
     } catch (error) {
       console.error('Error saving rug:', error);

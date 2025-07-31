@@ -1,8 +1,7 @@
 import React from 'react';
 import CleanLabInspectionForm from './forms/CleanLabInspectionForm';
 import { useToast } from '../hooks/use-toast';
-import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { firestore } from '../lib/firebase';
 
 type Company = 'EHI' | 'EM' | 'RG';
 
@@ -27,14 +26,14 @@ const DynamicLabInspectionForm: React.FC<DynamicLabInspectionFormProps> = ({
       const processedData = {
         ...data,
         company: selectedCompany,
-        createdAt: isEditing ? initialData?.createdAt : serverTimestamp(),
-        updatedAt: serverTimestamp(),
+        createdAt: isEditing ? initialData?.createdAt : new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        status: data.status || 'draft'
       };
 
       if (isEditing && editingInspectionId) {
         // Update existing inspection
-        const docRef = doc(db, 'labInspections', editingInspectionId);
-        await updateDoc(docRef, processedData);
+        await firestore.collection('labInspections').doc(editingInspectionId).update(processedData);
         
         toast({
           title: "Success",
@@ -42,10 +41,11 @@ const DynamicLabInspectionForm: React.FC<DynamicLabInspectionFormProps> = ({
         });
       } else {
         // Create new inspection
-        await addDoc(collection(db, 'labInspections'), processedData);
+        const result = await firestore.collection('labInspections').add(processedData);
+        console.log('Lab inspection created with ID:', result.id);
         
         toast({
-          title: "Success",
+          title: "Success", 
           description: "Lab inspection created successfully",
         });
       }
