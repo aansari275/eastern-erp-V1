@@ -1,0 +1,51 @@
+[
+  {
+    "id": "1752897730251",
+    "designName": "Traditional Persian Design",
+    "articleNumber": "TPD-001",
+    "size": "6x9 ft",
+    "quality": "Hand-knotted",
+    "construction": "200 KPSI",
+    "color": "Deep Red & Navy",
+    "weight": "2.5 kg/sqm",
+    "buyer": "Heritage Rugs Inc",
+    "status": "completed",
+    "createdAt": "2025-01-18T00:00:00.000Z",
+    "images": {
+      "rugImage1": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAECA//EACIQAAIBAwQCAwAAAAAAAAAAAAECAAMRIQQSMRNBUWGB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIR/9oADAMBAAIRAxEAPwDraUpSClKUApSlAKUpQH/2Q=="
+    }
+  },
+  {
+    "id": "1752899966131",
+    "designName": "Modern Geometric Pattern",
+    "articleNumber": "MGP-002",
+    "size": "8x10 ft",
+    "quality": "Machine-made",
+    "construction": "150 KPSI",
+    "color": "Blue & White",
+    "weight": "2.0 kg/sqm",
+    "buyer": "Modern Living Co",
+    "status": "in_progress",
+    "createdAt": "2025-01-18T00:00:00.000Z",
+    "images": {
+      "rugImage1": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAECA//EACIQAAIBAwQCAwAAAAAAAAAAAAECAAMRIQQSMRNBUWGB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIR/9oADAMBAAIRAxEAPwDraUpSClKUApSlAKUpQH/2Q==",
+      "rugImage2": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAECA//EACIQAAIBAwQCAwAAAAAAAAAAAAECAAMRIQQSMRNBUWGB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIR/9oADAMBAAIRAxEAPwDraUpSClKUApSlAKUpQH/2Q=="
+    }
+  },
+  {
+    "id": "1752901115713",
+    "designName": "Classic Floral",
+    "articleNumber": "CF-003",
+    "size": "5x7 ft",
+    "quality": "Hand-tufted",
+    "construction": "120 KPSI",
+    "color": "Cream & Gold",
+    "weight": "1.8 kg/sqm",
+    "buyer": "Classic Carpets Ltd",
+    "status": "sampling",
+    "createdAt": "2025-01-19T00:00:00.000Z",
+    "images": {
+      "rugImage1": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAECA//EACIQAAIBAwQCAwAAAAAAAAAAAAECAAMRIQQSMRNBUWGB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAXEQEBAQEAAAAAAAAAAAAAAAABAAIR/9oADAMBAAIRAxEAPwDraUpSClKUApSlAKUpQH/2Q=="
+    }
+  }
+]

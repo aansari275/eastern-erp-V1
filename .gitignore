@@ -81,3 +81,4 @@ attached_assets/
 *adminsdk*.json
 *service*account*.json
 *credentials*.json
+.vercel
